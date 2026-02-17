@@ -3,8 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-// import AdminBackButton from "../../components/AdminBackButton";
-// import Navbar from '@/app/components/Navbar'
+
 
 import { supabase } from "@/lib/supabaseClient";
 import {

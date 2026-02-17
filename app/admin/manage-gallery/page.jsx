@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Navbar from '@/app/components/Navbar'
-import AdminBackButton from "../../components/AdminBackButton";
+import AdminBackButton from '@/app/components/AdminBackButton'
 
 
 export default function ManageGallery() {

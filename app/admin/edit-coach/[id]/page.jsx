@@ -4,8 +4,7 @@ import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { supabase } from '@/lib/supabaseClient'
 import Navbar from '@/app/components/Navbar'
-import AdminBackButton from "../../components/AdminBackButton";
-
+import AdminBackButton from '@/app/components/AdminBackButton'
 
 export default function EditCoach() {
   const { id } = useParams()

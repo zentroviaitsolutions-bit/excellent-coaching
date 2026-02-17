@@ -1,5 +1,5 @@
 "use client";
-import AdminBackButton from "../../components/AdminBackButton";
+import AdminBackButton from '@/app/components/AdminBackButton'
 import { useEffect, useMemo, useState } from "react";
 import { supabase } from "@/lib/supabaseClient";
 import Navbar from "@/app/components/Navbar";

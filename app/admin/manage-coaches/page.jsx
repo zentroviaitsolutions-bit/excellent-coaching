@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
 import Navbar from '@/app/components/Navbar'
 import { useRouter } from 'next/navigation'   // ✅ ADDED
-import AdminBackButton from "../../components/AdminBackButton";
+import AdminBackButton from '@/app/components/AdminBackButton'
 
 
 export default function ManageCoaches() {
