@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { supabase } from '@/lib/supabaseClient'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 /* ------------------------ HELPERS ------------------------ */
 const normName = (s) => (s || '').trim().toLowerCase()
@@ -126,8 +126,16 @@ const saveTeacherSettings = (s) => {
 /* ------------------------ COMPONENT ------------------------ */
 export default function ArtStoryGame() {
   const router = useRouter()
-  const searchParams = useSearchParams()
-  const teacherMode = searchParams.get('teacher') === '1'
+  const [teacherMode, setTeacherMode] = useState(false)
+
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search)
+      setTeacherMode(sp.get('teacher') === '1')
+    } catch {
+      setTeacherMode(false)
+    }
+  }, [])
 
   const game = 'art_story'
 

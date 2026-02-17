@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabaseClient";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 
 export default function Login() {
@@ -11,8 +11,16 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
 
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirectTo = searchParams.get("redirect") || "/admin";
+  const [redirectTo, setRedirectTo] = useState("/admin");
+
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      setRedirectTo(sp.get("redirect") || "/admin");
+    } catch {
+      setRedirectTo("/admin");
+    }
+  }, []);
 
   const handleLogin = async (e) => {
     e.preventDefault();
