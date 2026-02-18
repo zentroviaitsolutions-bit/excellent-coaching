@@ -1,13 +1,19 @@
 "use client"
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 export default function AITeacher() {
   const [question, setQuestion] = useState("")
   const [messages, setMessages] = useState([])
   const [loading, setLoading] = useState(false)
+  const bottomRef = useRef(null)
+
+  // Auto scroll to bottom
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages, loading])
 
   const askAI = async () => {
-    if (!question.trim()) return
+    if (!question.trim() || loading) return
 
     const userMessage = { role: "user", text: question }
     setMessages((prev) => [...prev, userMessage])
@@ -30,65 +36,81 @@ export default function AITeacher() {
 
       setMessages((prev) => [...prev, aiMessage])
     } catch {
-      setMessages((prev) => [...prev, { role: "ai", text: "⚠️ Server error." }])
+      setMessages((prev) => [
+        ...prev,
+        { role: "ai", text: "⚠️ Server error. Please try again." },
+      ])
     }
 
     setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-pink-50 flex flex-col items-center p-6">
+    <div className="h-screen flex flex-col bg-gradient-to-br from-purple-50 to-pink-50">
 
-      <h1 className="text-4xl mb-6 bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent font-bold">
-         Zentrovia 🤖 AI Teacher
-      </h1>
+      {/* Header */}
+      <div className="p-4 text-center shadow-sm bg-white">
+        <h1 className="text-2xl sm:text-3xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          Vaelthor 🤖 AI Teacher
+        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          Ask your doubts instantly
+        </p> 
+      </div>
 
-      {/* Chat Box */}
-      <div className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 flex flex-col h-[70vh] overflow-hidden">
+      {/* Chat Container */}
+      <div className="flex-1 overflow-y-auto px-4 py-6 space-y-4">
 
-        {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto space-y-4 pr-2">
-          {messages.map((msg, i) => (
+        {messages.map((msg, i) => (
+          <div
+            key={i}
+            className={`flex ${
+              msg.role === "user" ? "justify-end" : "justify-start"
+            }`}
+          >
             <div
-              key={i}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
+              className={`max-w-[80%] px-4 py-3 rounded-2xl text-sm shadow-sm whitespace-pre-line ${
+                msg.role === "user"
+                  ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-br-sm"
+                  : "bg-white text-gray-800 rounded-bl-sm border"
+              }`}
             >
-              <div
-                className={`max-w-[75%] px-4 py-3 rounded-2xl text-sm whitespace-pre-line ${
-                  msg.role === "user"
-                    ? "bg-gradient-to-r from-purple-500 to-pink-500 text-white"
-                    : "bg-gray-100 text-gray-800"
-                }`}
-              >
-                {msg.text}
-              </div>
+              {msg.text}
             </div>
-          ))}
+          </div>
+        ))}
 
-          {loading && (
-            <div className="text-gray-500 text-sm"> Zentrovia AI is thinking...</div>
-          )}
-        </div>
+        {loading && (
+          <div className="text-gray-500 text-sm animate-pulse">
+            Vaelthor AI is typing...
+          </div>
+        )}
 
-        {/* Input Area */}
-        <div className="mt-4 flex gap-3">
+        <div ref={bottomRef}></div>
+      </div>
+
+      {/* Input Area */}
+      <div className="p-4 bg-white border-t">
+        <div className="flex gap-2">
           <input
             value={question}
             onChange={(e) => setQuestion(e.target.value)}
-            placeholder="Ask your doubt..."
-            className="flex-1 p-3 border rounded-xl"
+            placeholder="Type your question..."
+            className="flex-1 p-3 border rounded-full focus:outline-none focus:ring-2 focus:ring-purple-400"
             onKeyDown={(e) => e.key === "Enter" && askAI()}
           />
           <button
             onClick={askAI}
-            className="px-6 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl"
+            disabled={loading}
+            className="px-6 py-3 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold disabled:opacity-50"
           >
-            Send
+            {loading ? "..." : "Send"}
           </button>
         </div>
       </div>
     </div>
   )
 }
+
 
 
