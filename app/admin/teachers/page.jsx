@@ -62,15 +62,24 @@ export default function AdminTeachersPage() {
     const confirmDelete = confirm("Are you sure you want to delete this application?");
     if (!confirmDelete) return;
 
-    const { error } = await supabase
-      .from("teacher_applications")
-      .delete()
-      .eq("id", id);
+    try {
+      const res = await fetch("/api/teacher-applications/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids: [id] }),
+      });
 
-    if (error) {
-      alert("Failed to delete.");
-    } else {
-      setRows((prev) => prev.filter((r) => r.id !== id));
+      const data = await res.json();
+
+      if (!res.ok) {
+        alert(data.error || "Failed to delete.");
+      } else {
+        setRows((prev) => prev.filter((r) => r.id !== id));
+        alert("✅ Deleted!");
+      }
+    } catch (error) {
+      console.error("Delete error:", error);
+      alert("Network error. Please try again.");
     }
   };
 
@@ -90,18 +99,30 @@ export default function AdminTeachersPage() {
     }
 
     setLoading(true);
-    const { error } = await supabase
-      .from("teacher_applications")
-      .delete()
-      .neq("id", -1); // Delete all records
+    
+    try {
+      const ids = rows.map(r => r.id);
+      
+      const res = await fetch("/api/teacher-applications/delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids }),
+      });
 
-    setLoading(false);
+      const data = await res.json();
 
-    if (error) {
-      alert("Failed to delete all applications.");
-    } else {
-      alert("✅ All applications deleted successfully!");
-      setRows([]);
+      setLoading(false);
+
+      if (!res.ok) {
+        alert(data.error || "Failed to delete all applications.");
+      } else {
+        alert("✅ All applications deleted successfully!");
+        setRows([]);
+      }
+    } catch (error) {
+      setLoading(false);
+      console.error("Delete error:", error);
+      alert("Network error. Please try again.");
     }
   };
 

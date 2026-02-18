@@ -18,10 +18,10 @@ export async function POST(req) {
     }
 
     // ✅ Founder handled directly from backend (more secure & reliable)
-    if (question.toLowerCase().includes("founder")) {
+    if (question.toLowerCase().includes("founder ||about vaelthor Technologies")) {
       return Response.json({
         answer:
-          "My founder is Salman Ansari, the CEO of Vaelthor Technologies."
+          "My founder is Salman Ansari, the CEO of Vaelthor Technologies. That provide services like web development, mobile app development, and AI solutions. He is passionate about using technology to solve real-world problems and has a background in software engineering and entrepreneurship.",
       })
     }
 
