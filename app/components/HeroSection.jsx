@@ -208,7 +208,7 @@ const Herosection = () => {
 
             {/* 🔥 MAIN SEO HEADING */}
             <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6 bg-gradient-to-r from-purple-600 via-pink-600 to-orange-500 bg-clip-text text-transparent font-bold">
-              Best Coaching Center for Kids in Baheri
+              Best Coaching Centre for Kids in Baheri
             </h1>
 
             {/* SUB HEADING */}

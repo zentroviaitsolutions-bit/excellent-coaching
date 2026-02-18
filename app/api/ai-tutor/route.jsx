@@ -21,7 +21,7 @@ export async function POST(req) {
     if (question.toLowerCase().includes("founder")) {
       return Response.json({
         answer:
-          "My founder is Salman Ansari, the CEO of Valthor Technologies."
+          "My founder is Salman Ansari, the CEO of Vaelthor Technologies."
       })
     }
 
