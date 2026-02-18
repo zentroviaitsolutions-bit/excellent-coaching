@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabaseClient";
 import {
   FiBriefcase,
   FiPhone,
@@ -47,37 +46,43 @@ export default function CareerPage() {
 
     setLoading(true);
 
-    const payload = {
-      ...form,
-      experience_years:
-        form.experience_years === "" ? null : Number(form.experience_years),
-    };
-
-    const { error } = await supabase
-      .from("teacher_applications")
-      .insert(payload);
-
-    setLoading(false);
-
-    if (error) {
-      console.log(error);
-      setMsg(error.message);
-    } else {
-      setMsg("✅ Application submitted! We will contact you soon.");
-      setForm({
-        full_name: "",
-        email: "",
-        phone: "",
-        whatsapp: "",
-        city: "",
-        address: "",
-        qualification: "",
-        subjects: "",
-        experience_years: "",
-        expected_salary: "",
-        availability: "",
-        notes: "",
+    try {
+      const res = await fetch("/api/teacher-applications", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...form,
+          experience_years:
+            form.experience_years === "" ? null : Number(form.experience_years),
+        }),
       });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMsg(data.error || "Failed to submit application");
+      } else {
+        setMsg("✅ Application submitted! We will contact you soon.");
+        setForm({
+          full_name: "",
+          email: "",
+          phone: "",
+          whatsapp: "",
+          city: "",
+          address: "",
+          qualification: "",
+          subjects: "",
+          experience_years: "",
+          expected_salary: "",
+          availability: "",
+          notes: "",
+        });
+      }
+    } catch (error) {
+      console.error("Submit error:", error);
+      setMsg("Network error. Please try again.");
+    } finally {
+      setLoading(false);
     }
   };
 
