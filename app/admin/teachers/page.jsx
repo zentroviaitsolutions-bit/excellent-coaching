@@ -57,7 +57,7 @@ export default function AdminTeachersPage() {
     if (!authLoading) load();
   }, [authLoading]);
 
-  // DELETE FUNCTION
+  // DELETE ONE FUNCTION
   const handleDelete = async (id) => {
     const confirmDelete = confirm("Are you sure you want to delete this application?");
     if (!confirmDelete) return;
@@ -71,6 +71,37 @@ export default function AdminTeachersPage() {
       alert("Failed to delete.");
     } else {
       setRows((prev) => prev.filter((r) => r.id !== id));
+    }
+  };
+
+  // DELETE ALL FUNCTION
+  const handleDeleteAll = async () => {
+    const confirmDelete = confirm(
+      `⚠️ Are you sure you want to DELETE ALL ${rows.length} applications? This cannot be undone.`
+    );
+    if (!confirmDelete) return;
+
+    const confirmAgain = prompt(
+      "Type 'DELETE' to confirm deletion of all applications:",
+    );
+    if (confirmAgain !== "DELETE") {
+      alert("Cancelled.");
+      return;
+    }
+
+    setLoading(true);
+    const { error } = await supabase
+      .from("teacher_applications")
+      .delete()
+      .neq("id", -1); // Delete all records
+
+    setLoading(false);
+
+    if (error) {
+      alert("Failed to delete all applications.");
+    } else {
+      alert("✅ All applications deleted successfully!");
+      setRows([]);
     }
   };
 
@@ -140,6 +171,14 @@ export default function AdminTeachersPage() {
             >
               <FiRefreshCw /> Refresh
             </button>
+            {rows.length > 0 && (
+              <button
+                onClick={handleDeleteAll}
+                className="inline-flex items-center gap-2 px-4 py-3 rounded-2xl border border-red-300 bg-red-50 hover:bg-red-100 font-semibold text-red-700"
+              >
+                <FiTrash2 /> Delete All
+              </button>
+            )}
           </div>
         </div>
 
