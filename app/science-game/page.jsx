@@ -685,15 +685,20 @@ export default function ScienceGame() {
               onChange={(e) => setNameInput(e.target.value)}
             />
 
-            <label className="text-sm font-semibold">Class (1-9)</label>
-            <input
-              className="w-full p-3 mt-1 mb-4 border rounded-xl"
-              type="number"
-              min={1}
-              max={9}
-              value={cls}
-              onChange={(e) => setCls(parseInt(e.target.value || '1', 10))}
-            />
+    <label className="text-sm font-semibold">Class (1-9)</label>
+<select
+  className="w-full p-3 mt-1 mb-4 border rounded-xl bg-white"
+  value={cls}
+  onChange={(e) => setCls(Number(e.target.value))}
+>
+  {[1,2,3,4,5,6,7,8,9].map((n) => (
+    <option key={n} value={n}>
+      📘 Class {n}
+    </option>
+  ))}
+</select>
+
+
 
             <button
               className="bg-green-600 hover:bg-green-700 transition text-white px-4 py-3 rounded-xl w-full font-bold"

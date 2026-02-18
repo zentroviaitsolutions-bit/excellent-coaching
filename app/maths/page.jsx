@@ -66,7 +66,7 @@ const makeSub = (cls, difficulty) => {
   max = Math.floor(max * (1 + 0.25 * (difficulty - 1)))
   let a = randInt(0, max)
   let b = randInt(0, max)
-  if (b > a) ;[a, b] = [b, a]
+  if (b > a);[a, b] = [b, a]
   const ans = a - b
   return { q: `${a} − ${b} = ?`, answer: String(ans) }
 }
@@ -233,7 +233,7 @@ const loadTeacherSettings = (cls) => {
 const saveTeacherSettings = (s) => {
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(s))
-  } catch {}
+  } catch { }
 }
 
 /* ------------------------ COMPONENT ------------------------ */
@@ -722,7 +722,7 @@ export default function MathsGame() {
   const resetTeacher = () => {
     try {
       localStorage.removeItem(SETTINGS_KEY)
-    } catch {}
+    } catch { }
     const s = defaultTeacherSettings(cls)
     setSettings(s)
     alert('Teacher settings reset ✅ (reload recommended)')
@@ -762,15 +762,19 @@ export default function MathsGame() {
               onChange={(e) => setNameInput(e.target.value)}
             />
 
-            <label className="text-sm font-semibold">Class (1-9)</label>
-            <input
-              className="w-full p-3 mt-1 mb-4 border rounded-xl"
-              type="number"
-              min={1}
-              max={9}
-              value={cls}
-              onChange={(e) => setCls(parseInt(e.target.value || '1', 10))}
-            />
+          <label className="text-sm font-semibold">Class (1-9)</label>
+<select
+  className="w-full p-3 mt-1 mb-4 border rounded-xl bg-white"
+  value={cls}
+  onChange={(e) => setCls(Number(e.target.value))}
+>
+  {[1,2,3,4,5,6,7,8,9].map((n) => (
+    <option key={n} value={n}>
+      📘 Class {n}
+    </option>
+  ))}
+</select>
+
 
             <button
               className="bg-green-600 hover:bg-green-700 transition text-white px-4 py-3 rounded-xl w-full font-bold"
@@ -1087,9 +1091,8 @@ export default function MathsGame() {
               <button
                 key={opt}
                 onClick={() => setSelectedOption(opt)}
-                className={`p-4 rounded-xl border font-bold transition ${
-                  selectedOption === opt ? 'bg-green-600 text-white' : 'bg-white hover:bg-slate-50'
-                }`}
+                className={`p-4 rounded-xl border font-bold transition ${selectedOption === opt ? 'bg-green-600 text-white' : 'bg-white hover:bg-slate-50'
+                  }`}
               >
                 {opt}
               </button>

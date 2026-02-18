@@ -63,7 +63,7 @@ export default function AddTestimonialAdmin() {
 
         <div className="max-w-3xl mx-auto bg-white p-10 rounded-3xl shadow-xl">
           <h2 className="text-3xl mb-6 text-center font-bold text-purple-600">
-            Sorry this sewrvice is not avilable yet 
+            Sorry this service is not available yet 
           </h2>
           
 
