@@ -1,59 +1,59 @@
 import OpenAI from "openai"
+import { NextResponse } from "next/server"
 
 const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
   apiKey: process.env.OPENROUTER_API_KEY,
+  defaultHeaders: {
+    "HTTP-Referer": "http://localhost:3000",
+    "X-Title": "Vaelthor AI Tutor",
+  },
 })
 
 export async function POST(req) {
   try {
+    if (!process.env.OPENROUTER_API_KEY) {
+      return NextResponse.json(
+        { error: "OpenRouter API key missing in .env.local" },
+        { status: 500 }
+      )
+    }
+
     const body = await req.json()
     const question = body?.question?.trim()
 
     if (!question) {
-      return Response.json(
+      return NextResponse.json(
         { error: "Question is required." },
         { status: 400 }
       )
     }
 
-    // ✅ Founder handled directly from backend (more secure & reliable)
-    if (question.toLowerCase().includes("founder ||about vaelthor Technologies")) {
-      return Response.json({
+    const lowerQuestion = question.toLowerCase()
+
+    if (
+      lowerQuestion.includes("founder") ||
+      lowerQuestion.includes("about vaelthor technologies")
+    ) {
+      return NextResponse.json({
         answer:
-          "My founder is Salman Ansari, the CEO of Vaelthor Technologies. That provide services like web development, mobile app development, and AI solutions. He is passionate about using technology to solve real-world problems and has a background in software engineering and entrepreneurship.",
+          "My founder is Salman Ansari, the CEO of Vaelthor Technologies. Vaelthor provides web development, mobile app development, and AI solutions.",
       })
     }
 
     const completion = await openai.chat.completions.create({
-      model: "mistralai/mistral-7b-instruct",
+      model: "openai/gpt-3.5-turbo", 
       temperature: 0.4,
       max_tokens: 500,
       messages: [
         {
           role: "system",
           content: `
-You are Vaelthor, a friendly and professional AI tutor for primary and secondary school students.
-
-Strict Rules:
-
+You are Vaelthor, a friendly AI tutor for school students.
 Respond in plain text only.
-Do not use markdown symbols like *, **, -, or bullet signs.
-Do not use bold or italic formatting.
 Keep answers short and clear.
-Use simple language suitable for school students.
 Leave one blank line between lines.
-If explanation has multiple points, write each on a new line without symbols.
-If step-by-step solution is required, format like:
-
-Step 1:
-Explanation
-
-Step 2:
-Explanation
-
-If student uses rude language, politely guide them to use respectful language.
-`
+`,
         },
         {
           role: "user",
@@ -62,24 +62,17 @@ If student uses rude language, politely guide them to use respectful language.
       ],
     })
 
-    let answer =
+    const answer =
       completion?.choices?.[0]?.message?.content ||
       "I could not answer that."
 
-    // Extra formatting cleanup protection
-    answer = answer
-      .replace(/\*/g, "")
-      .replace(/•/g, "")
-      .replace(/-/g, "")
-      .trim()
-
-    return Response.json({ answer })
+    return NextResponse.json({ answer })
 
   } catch (error) {
-    console.error("AI Route Error:", error)
+    console.error("FULL ERROR:", error)
 
-    return Response.json(
-      { error: "Something went wrong. Please try again." },
+    return NextResponse.json(
+      { error: error.message || "Something went wrong." },
       { status: 500 }
     )
   }
