@@ -52,7 +52,7 @@ export const metadata = {
     title: "Best Coaching Center for Kids in Baheri",
     description:
       "Join Baheri’s trusted coaching center with expert faculty, personalized attention, and result-oriented learning.",
-    url: "https://yourdomain.com",
+    url: "https://excellentcoaching.online",
     siteName: "Excellent Coaching Baheri",
     locale: "en_IN",
     type: "website",
@@ -109,8 +109,8 @@ export default function RootLayout({ children }) {
               "@context": "https://schema.org",
               "@type": "EducationalOrganization",
               name: "Excellent Coaching",
-              url: "https://yourdomain.com",
-              logo: "https://yourdomain.com/logo.png",
+              url: "excellentcoaching.online",
+              logo: "https://excellentcoaching.online/logo.png",
               description:
                 "Best coaching center for kids in Baheri offering maths and English tuition with expert teachers.",
               address: {
