@@ -51,7 +51,7 @@ const Navbar = () => {
             onClick={() => router.push('/')}
           >
             <img
-              src="/logo.jpeg"
+              src="/logo.png"
               alt="Excellent Coaching Logo"
               className="w-12 h-12 object-contain"
             />
