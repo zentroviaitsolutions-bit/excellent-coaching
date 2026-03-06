@@ -70,7 +70,7 @@ const Footer = () => {
           {/* Brand */}
           <div className='lg:col-span-2'>
             <div className='flex items-center gap-2 mb-4'>
-              <img src="/logo.jpeg" alt="Excellent Coaching Logo" className="w-12 h-12 object-contain" />
+              <img src="/logo.png" alt="Excellent Coaching Logo" className="w-12 h-12 object-contain" />
               <span className='text-3xl font-semibold'>Excellent Coaching</span>
             </div>
 
